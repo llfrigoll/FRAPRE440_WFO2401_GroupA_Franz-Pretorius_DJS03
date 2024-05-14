@@ -6,6 +6,16 @@ let matches = books
 const starting = document.createDocumentFragment()
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
+    //Usage of tile creation
+    const element = tileCreation(author, id, image, title)
+    starting.appendChild(element)
+}
+
+document.querySelector('[data-list-items]').appendChild(starting)
+
+
+//The creation of a tile is used in multiple places so I created a function to handle it
+function tileCreation(author, id, image, title) {
     const element = document.createElement('button')
     element.classList = 'preview'
     element.setAttribute('data-preview', id)
@@ -22,10 +32,8 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
         </div>
     `
 
-    starting.appendChild(element)
+    return element
 }
-
-document.querySelector('[data-list-items]').appendChild(starting)
 
 //The code for generating html for genres and authors were very similar and therefore refactored their code into one function
 //splitting up the creation using a parameter called datatype
@@ -129,8 +137,6 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
         }
     }
 
-
-    //////////////////////////////////////////////////////////////////////////////////////////
     page = 1;
     matches = result
 
@@ -144,29 +150,12 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     const newItems = document.createDocumentFragment()
 
     for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-
+        //Usage of tile creation
+        const element = tileCreation(author, id, image, title)
         newItems.appendChild(element)
     }
 
     document.querySelector('[data-list-items]').appendChild(newItems)
-    /////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
     document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
 
@@ -183,22 +172,8 @@ document.querySelector('[data-list-button]').addEventListener('click', () => {
     const fragment = document.createDocumentFragment()
 
     for (const { author, id, image, title } of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
-    
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-
+        //Usage of tile creation
+        const element = tileCreation(author, id, image, title)
         fragment.appendChild(element)
     }
 
