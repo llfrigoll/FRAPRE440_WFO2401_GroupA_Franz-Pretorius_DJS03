@@ -27,35 +27,29 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
 
 document.querySelector('[data-list-items]').appendChild(starting)
 
-const genreHtml = document.createDocumentFragment()
-const firstGenreElement = document.createElement('option')
-firstGenreElement.value = 'any'
-firstGenreElement.innerText = 'All Genres'
-genreHtml.appendChild(firstGenreElement)
+//The code for generating html for genres and authors were very similar and therefore refactored their code into one function
+//splitting up the creation using a parameter called datatype
 
-for (const [id, name] of Object.entries(genres)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    genreHtml.appendChild(element)
+function createFilterHtml(datatype) { //datatype is in this case genres or authors
+    const datatypeHtml = document.createDocumentFragment()
+    const firstDatatypeElement = document.createElement('option')
+    firstDatatypeElement.value = 'any'
+    firstDatatypeElement.innerText = datatype === 'genres' ? 'All Genres' : 'All Authors'
+    datatypeHtml.appendChild(firstDatatypeElement)
+
+    for (const [id, name] of Object.entries(datatype === 'genres' ? genres : authors)) {
+        const element = document.createElement('option')
+        element.value = id
+        element.innerText = name
+        datatypeHtml.appendChild(element)
+    }
+
+    document.querySelector(`[data-search-${datatype}]`).appendChild(datatypeHtml)
 }
 
-document.querySelector('[data-search-genres]').appendChild(genreHtml)
-
-const authorsHtml = document.createDocumentFragment()
-const firstAuthorElement = document.createElement('option')
-firstAuthorElement.value = 'any'
-firstAuthorElement.innerText = 'All Authors'
-authorsHtml.appendChild(firstAuthorElement)
-
-for (const [id, name] of Object.entries(authors)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    authorsHtml.appendChild(element)
-}
-
-document.querySelector('[data-search-authors]').appendChild(authorsHtml)
+//Usage of function with each parameter
+createFilterHtml('genres')
+createFilterHtml('authors')
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
@@ -135,6 +129,8 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////
     page = 1;
     matches = result
 
@@ -168,6 +164,10 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     }
 
     document.querySelector('[data-list-items]').appendChild(newItems)
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1
 
     document.querySelector('[data-list-button]').innerHTML = `
