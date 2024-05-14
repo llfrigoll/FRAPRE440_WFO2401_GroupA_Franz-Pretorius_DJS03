@@ -59,14 +59,20 @@ function createFilterHtml(datatype) { //datatype is in this case genres or autho
 createFilterHtml('genres')
 createFilterHtml('authors')
 
+//Code for setting themes is used multiple times, this function gives correct output using the parameter as either day or night
+function themeCheck(dayOrNightValue) { //value is either 'day' or 'night'
+    document.documentElement.style.setProperty(dayOrNightValue === 'night' ? '--color-dark' : '--color-light', '255, 255, 255');
+    document.documentElement.style.setProperty(dayOrNightValue === 'night' ? '--color-light' : '--color-dark', '10, 10, 20');
+}
+
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
-    document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-    document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+    //Usage of themeCheck function
+    themeCheck('night')
 } else {
     document.querySelector('[data-settings-theme]').value = 'day'
-    document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-    document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    //Usage of themeCheck function
+    themeCheck('day')
 }
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
@@ -103,13 +109,8 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
-    if (theme === 'night') {
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-    } else {
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
-    }
+    //Usage of themeCheck function
+    themeCheck(theme)
     
     document.querySelector('[data-settings-overlay]').open = false
 })
