@@ -6,13 +6,11 @@ let matches = books
 const starting = document.createDocumentFragment()
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-    //Usage of tile creation
-    const element = tileCreation(author, id, image, title)
+    const element = tileCreation(author, id, image, title)//Usage of tile creation
     starting.appendChild(element)
 }
 
 document.querySelector('[data-list-items]').appendChild(starting)
-
 
 //The creation of a tile is used in multiple places so I created a function to handle it
 function tileCreation(author, id, image, title) {
@@ -31,13 +29,11 @@ function tileCreation(author, id, image, title) {
             <div class="preview__author">${authors[author]}</div>
         </div>
     `
-
     return element
 }
 
 //The code for generating html for genres and authors were very similar and therefore refactored their code into one function
 //splitting up the creation using a parameter called datatype
-
 function createFilterHtml(datatype) { //datatype is in this case genres or authors
     const datatypeHtml = document.createDocumentFragment()
     const firstDatatypeElement = document.createElement('option')
@@ -55,9 +51,8 @@ function createFilterHtml(datatype) { //datatype is in this case genres or autho
     document.querySelector(`[data-search-${datatype}]`).appendChild(datatypeHtml)
 }
 
-//Usage of function with each parameter
-createFilterHtml('genres')
-createFilterHtml('authors')
+createFilterHtml('genres')//Usage of createFilterHtml with each parameter
+createFilterHtml('authors')//Usage of createFilterHtml with each parameter
 
 //Code for setting themes is used multiple times, this function gives correct output using the parameter as either day or night
 function themeCheck(dayOrNightValue) { //value is either 'day' or 'night'
@@ -67,12 +62,10 @@ function themeCheck(dayOrNightValue) { //value is either 'day' or 'night'
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
-    //Usage of themeCheck function
-    themeCheck('night')
+    themeCheck('night')//Usage of themeCheck function
 } else {
     document.querySelector('[data-settings-theme]').value = 'day'
-    //Usage of themeCheck function
-    themeCheck('day')
+    themeCheck('day')//Usage of themeCheck function
 }
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
@@ -109,8 +102,7 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
 
-    //Usage of themeCheck function
-    themeCheck(theme)
+    themeCheck(theme)//Usage of themeCheck function
     
     document.querySelector('[data-settings-overlay]').open = false
 })
@@ -151,8 +143,7 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
     const newItems = document.createDocumentFragment()
 
     for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
-        //Usage of tile creation
-        const element = tileCreation(author, id, image, title)
+        const element = tileCreation(author, id, image, title)//Usage of tile creation
         newItems.appendChild(element)
     }
 
@@ -173,8 +164,7 @@ document.querySelector('[data-list-button]').addEventListener('click', () => {
     const fragment = document.createDocumentFragment()
 
     for (const { author, id, image, title } of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
-        //Usage of tile creation
-        const element = tileCreation(author, id, image, title)
+        const element = tileCreation(author, id, image, title)//Usage of tile creation
         fragment.appendChild(element)
     }
 
